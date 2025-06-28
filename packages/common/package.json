@@ -1,0 +1,39 @@
+{
+    "name": "@monorepo/common",
+    "private": false,
+    "version": "1.0.0",
+    "description": "Demo library that contains common utility functions",
+    "repository": "https://github.com/y1j2x34/tsup-vitest-monorepo-boilerplate.git",
+    "author": {
+        "name": "Chienhsin Yang",
+        "email": "y1j2x345@gmail.com"
+    },
+    "files": ["lib"],
+    "main": "./lib/index.js",
+    "module": "./lib/index.mjs",
+    "types": "./lib/index.d.ts",
+    "__exports-comment": "// Define output files for Node.js export maps (https://nodejs.org/api/packages.html#exports)",
+    "exports": {
+        ".": {
+            "import": {
+                "@monorepo/source": "./src/index.ts",
+                "types": "./lib/index.d.mts",
+                "default": "./lib/index.mjs"
+            },
+            "require": {
+                "@monorepo/source": "./src/index.ts",
+                "types": "./lib/index.d.ts",
+                "default": "./lib/index.js"
+            }
+        },
+        "./package.json": "./package.json"
+    },
+    "scripts": {
+        "build": "tsup ./src/index.ts --config ../../tsup.config.ts",
+        "build:watch": "pnpm build --watch",
+        "check:exports": "attw --pack .",
+        "test": "vitest --config ../../vitest.config.ts run",
+        "test:unit": "vitest --config ../../vitest.config.ts --project unit run",
+        "test:integration": "vitest --config ../../vitest.config.ts --project integration run"
+    }
+}

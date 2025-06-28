@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "name": "@monorepo/example",
+    "version": "0.1.0",
+    "description": "Demo example that imports a local package",
+    "author": {
+        "name": "Chienhsin Yang",
+        "email": "y1j2x345@gmail.com"
+    },
+    "main": "./src/index.ts",
+    "scripts": {
+        "test:unit": "vitest --config ../../vitest.config.ts --project unit run"
+    },
+    "dependencies": {
+        "@monorepo/common": "workspace:*"
+    }
+}

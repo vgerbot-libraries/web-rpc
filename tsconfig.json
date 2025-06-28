@@ -1,0 +1,22 @@
+{
+    "extends": "./tsconfig.options.json",
+    "references": [
+        {
+            "path": "./tsconfig.test.json"
+        },
+        {
+            "path": "./tsconfig.devtools.json"
+        },
+        {
+            "path": "./tsconfig.source.json"
+        }
+    ],
+    "files": [],
+    "exclude": [
+        "**/lib/**",
+        "**/dist/**",
+        "**/build/**",
+        "**/*.d.ts",
+        "!**/*.spec.d.ts"
+    ]
+}
