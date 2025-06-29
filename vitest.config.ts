@@ -11,6 +11,7 @@ export default defineConfig({
             tsconfig: './tsconfig.test.json',
         },
         coverage: {
+            enabled: true,
             provider: 'v8',
             reporter: ['text', 'json', 'html', 'lcov'],
             reportsDirectory: './coverage',
