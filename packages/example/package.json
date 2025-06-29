@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "@monorepo/example",
+    "name": "@vgerbot/web-rpc-example",
     "version": "0.1.0",
     "description": "Demo example that imports a local package",
     "author": {
@@ -12,6 +12,6 @@
         "test:unit": "vitest --config ../../vitest.config.ts --project unit run"
     },
     "dependencies": {
-        "@monorepo/common": "workspace:*"
+        "@vgerbot/web-rpc": "workspace:*"
     }
 }

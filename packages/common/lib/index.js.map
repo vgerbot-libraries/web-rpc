@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/index.ts"],"sourcesContent":["export function sum(args: number[]) {\n    return args.reduce((acc, it) => acc + it, 0);\n}\n"],"mappings":";;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,SAAS,IAAI,MAAgB;AAChC,SAAO,KAAK,OAAO,CAAC,KAAK,OAAO,MAAM,IAAI,CAAC;AAC/C;","names":[]}

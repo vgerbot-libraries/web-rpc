@@ -1,4 +1,4 @@
-import { sum } from '@monorepo/common';
+import { sum } from '@vgerbot/web-rpc';
 
 function main() {
     const arr = [1, 2, 3];
