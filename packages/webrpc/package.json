@@ -31,7 +31,7 @@
         "./package.json": "./package.json"
     },
     "scripts": {
-        "build": "tsup ./src/index.ts --config ../../tsup.config.ts --tsconfig ./tsconfig.json",
+        "build": "tsup ./src/index.ts --config ../../tsup.config.ts --tsconfig ../../tsconfig.build.json",
         "build:watch": "pnpm build --watch",
         "check:exports": "attw --pack .",
         "test": "vitest --config ../../vitest.config.ts run",

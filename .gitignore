@@ -135,3 +135,6 @@ debug.*
 
 temp/
 
+**/src/**/*.d.ts
+**/src/**/*.d.ts.map
+**/src/**/*.d.mts
