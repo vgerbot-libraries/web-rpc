@@ -5,7 +5,11 @@
         "composite": true,
         "module": "ESNext",
         "moduleResolution": "Bundler",
-        "target": "ESNext"
+        "target": "ESNext",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ]
     },
     "include": [
         "**/src/**/*.ts"

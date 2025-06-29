@@ -11,7 +11,7 @@
             "path": "./tsconfig.source.json"
         }
     ],
-    "files": [],
+    "include": [],
     "exclude": [
         "**/lib/**",
         "**/dist/**",

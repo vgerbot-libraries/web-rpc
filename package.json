@@ -1,7 +1,7 @@
 {
-    "name": "tsup-vitest-monorepo-boilerplate",
+    "name": "@vgerbot/web-rpc-root",
     "version": "1.0.0",
-    "description": "A modern TypeScript monorepo boilerplate with tsup, vitest, and comprehensive tooling",
+    "description": "",
     "type": "module",
     "main": "index.js",
     "scripts": {

@@ -95,7 +95,7 @@ The project uses TypeScript project references for optimal build performance:
 
 ### Custom Conditions
 
-The monorepo uses custom import conditions (`@monorepo/source`) to:
+The monorepo uses custom import conditions (`@vgerbot/source`) to:
 - Enable "Go to definition" to navigate to source files instead of build outputs
 - Improve development experience in IDEs
 - Maintain proper module resolution in development
@@ -193,7 +193,7 @@ Packages are also published to GitHub Packages registry for internal use.
 Example package.json:
 ```json
 {
-  "name": "@monorepo/new-package",
+  "name": "@vgerbot/new-package",
   "version": "1.0.0",
   "main": "./lib/index.js",
   "module": "./lib/index.mjs",
@@ -201,12 +201,12 @@ Example package.json:
   "exports": {
     ".": {
       "import": {
-        "@monorepo/source": "./src/index.ts",
+        "@vgerbot/source": "./src/index.ts",
         "types": "./lib/index.d.mts",
         "default": "./lib/index.mjs"
       },
       "require": {
-        "@monorepo/source": "./src/index.ts",
+        "@vgerbot/source": "./src/index.ts",
         "types": "./lib/index.d.ts",
         "default": "./lib/index.js"
       }

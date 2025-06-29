@@ -5,7 +5,7 @@
         // Useful to prevent "Go to definition" from navigating to the `build` folder of an imported package from this monorepo.
         // Reference: Chapter 5 of https://colinhacks.com/essays/live-types-typescript-monorepo
         "customConditions": [
-            "@monorepo/source"
+            "@vgerbot/source"
         ],
         // Set moduleResolution to bundler to support customConditions
         "moduleResolution": "bundler",
@@ -13,6 +13,8 @@
         "module": "ESNext",
         // Enable all strict type checking options.
         "strict": true,
+        // Enforce strict mode.
+        "alwaysStrict": true,
         // Enables project references and informs the TypeScript program where to find referenced outputs.
         "composite": true,
         // Project references rely on the compiled declarations (.d.ts) of external projects.
@@ -30,6 +32,8 @@
         "esModuleInterop": true,
         // Ensure that each file can be safely transpiled without relying on other imports.
         "isolatedModules": true,
+        // Disallow implicit any.
+        "noImplicitAny": true,
         "noUnusedLocals": false,
         "noUnusedParameters": false,
         "allowJs": false,

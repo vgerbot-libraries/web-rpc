@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     resolve: {
-        conditions: ['@monorepo/source'],
+        conditions: ['@vgerbot/source'],
     },
     test: {
         environment: 'node',
