@@ -1,15 +1,15 @@
-/// <reference types="chrome" />
+import type browser from 'webextension-polyfill';
 
 import type { Transport } from '../core/Transport';
 import type { SerializableData } from '../protocol/SerializableData';
 
 export type BrowserExtensionTransportOptions = {
-    port: chrome.runtime.Port;
+    port: browser.Runtime.Port;
 };
 
 export class BrowserExtensionTransport implements Transport {
-    private readonly port: chrome.runtime.Port;
-    private listener?: (message: object, port: chrome.runtime.Port) => void;
+    private readonly port: browser.Runtime.Port;
+    private listener?: (message: unknown, port: browser.Runtime.Port) => void;
 
     constructor(options: BrowserExtensionTransportOptions) {
         this.port = options.port;

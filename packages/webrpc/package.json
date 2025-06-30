@@ -37,5 +37,11 @@
         "test": "vitest --config ../../vitest.config.ts run",
         "test:unit": "vitest --config ../../vitest.config.ts --project unit run",
         "test:integration": "vitest --config ../../vitest.config.ts --project integration run"
+    },
+    "optionalDependencies": {
+        "webextension-polyfill": "^0.12.0"
+    },
+    "devDependencies": {
+        "@types/webextension-polyfill": "^0.12.3"
     }
 }
