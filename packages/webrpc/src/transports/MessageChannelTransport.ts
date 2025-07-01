@@ -11,6 +11,7 @@ export class MessageChannelTransport implements Transport {
 
     constructor(options: MessageChannelTransportOptions) {
         this.port = options.port;
+        this.port.start();
     }
 
     send(data: SerializableData, transfer?: Transferable[]): void {
@@ -23,7 +24,6 @@ export class MessageChannelTransport implements Transport {
         };
 
         this.port.addEventListener('message', this.listener);
-        this.port.start();
 
         return () => {
             if (this.listener) {
