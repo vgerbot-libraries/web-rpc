@@ -17,18 +17,12 @@
         "changeset": "changeset",
         "changeset:version": "changeset version",
         "changeset:publish": "changeset publish",
-        "prepare": "is-ci || husky",
+        "prepare": "(is-ci || husky) && playwright install",
         "tsc": "tsc --noEmit --project tsconfig.source.json && tsc --noEmit --project tsconfig.test.json && tsc --noEmit --project tsconfig.devtools.json"
     },
-    "keywords": [
-        "typescript",
-        "monorepo",
-        "tsup",
-        "vitest",
-        "boilerplate"
-    ],
+    "keywords": ["typescript", "monorepo", "tsup", "vitest", "boilerplate"],
     "author": "Chienhsin Yang <y1j2x345@gmail.com>",
-    "license": "ISC",
+    "license": "MIT",
     "devDependencies": {
         "@changesets/cli": "^2.29.5",
         "@commitlint/cli": "^19.8.1",
@@ -65,13 +59,8 @@
     },
     "pre-commit": "lint-staged",
     "lint-staged": {
-        "*.{js,ts,cjs,mjs}": [
-            "eslint --fix",
-            "prettier --write"
-        ],
-        "*.{md,json,jsonc}": [
-            "prettier --write"
-        ]
+        "*.{js,ts,cjs,mjs}": ["eslint --fix", "prettier --write"],
+        "*.{md,json,jsonc}": ["prettier --write"]
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"

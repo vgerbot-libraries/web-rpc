@@ -5,14 +5,13 @@ export default defineConfig({
         conditions: ['@vgerbot/source'],
     },
     test: {
-        environment: 'node',
         globals: true,
         typecheck: {
             tsconfig: './tsconfig.test.json',
         },
         coverage: {
             enabled: true,
-            provider: 'v8',
+            provider: 'istanbul',
             reporter: ['text', 'json', 'html', 'lcov'],
             reportsDirectory: './coverage',
             exclude: [
@@ -38,6 +37,7 @@ export default defineConfig({
         projects: [
             {
                 test: {
+                    environment: 'node',
                     name: 'unit',
                     include: ['**/unit/**/*.spec.ts'],
                     globals: true,
@@ -48,6 +48,15 @@ export default defineConfig({
                     name: 'integration',
                     include: ['**/integration/**/*.spec.ts'],
                     globals: true,
+                    browser: {
+                        enabled: true,
+                        provider: 'playwright',
+                        instances: [
+                            {
+                                browser: 'chromium',
+                            },
+                        ],
+                    },
                 },
             },
         ],
