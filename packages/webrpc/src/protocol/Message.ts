@@ -28,11 +28,3 @@ export function isRPCMessage(data: unknown): data is RPCMessage {
         (data.action === 'method-call' || data.action === 'method-return')
     );
 }
-
-export function isCallMethodMessage(data: unknown): data is CallMethodMessage {
-    return isRPCMessage(data) && data.action === 'method-call';
-}
-
-export function isReturnMethodMessage(data: unknown): data is ReturnMethodMessage {
-    return isRPCMessage(data) && data.action === 'method-return';
-}

@@ -9,6 +9,9 @@ export class PostMessageTransport<T extends MessageSender> implements Transport 
         if (!isPostMessageTarget(sender)) {
             throw new Error(`Invalid post message target: ${typeof sender} is not a valid post message target`);
         }
+        if (isMessagePort(this.sender)) {
+            this.sender.start();
+        }
     }
     send(data: SerializableData, transfer?: Transferable[]): void {
         const sender = this.sender;
