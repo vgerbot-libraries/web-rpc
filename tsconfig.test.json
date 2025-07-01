@@ -2,21 +2,12 @@
     "extends": "./tsconfig.options.json",
     "compilerOptions": {
         "composite": true,
-        "lib": [
-            "ESNext"
-        ],
+        "lib": ["ESNext"],
         "module": "ESNext",
         "target": "ESNext",
         "moduleResolution": "Bundler",
         // Include test-specific types.
-        "types": [
-            "vitest/globals",
-            "node"
-        ]
+        "types": ["vitest/globals", "node"]
     },
-    "include": [
-        "**/src/**/*.ts",
-        "**/__tests__/**/*.ts",
-        "**/__tests__/**/*.spec.ts"
-    ]
+    "include": ["**/__tests__/**/*.ts", "**/__tests__/**/*.spec.ts"]
 }

@@ -23,7 +23,7 @@ module.exports = {
             files: ['*.mjs', '*.js', '*.jsx', '*.es', '*.cjs'],
         },
         {
-            files: ['*.ts'],
+            files: ['*.config.ts'],
             extends: [],
 
             parserOptions: {
