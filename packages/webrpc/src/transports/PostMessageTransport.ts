@@ -1,38 +1,67 @@
 import type { Transport } from '../core/Transport';
 import type { SerializableData } from '../protocol/SerializableData';
 
-type PostMessageTarget = {
-    postMessage: (message: unknown, transfer?: Transferable[]) => void;
-    addEventListener: (type: string, listener: (event: MessageEvent) => void) => void;
-    removeEventListener: (type: string, listener: (event: MessageEvent) => void) => void;
-};
+type MessageSender = MessagePort | BroadcastChannel | ServiceWorker | DedicatedWorkerGlobalScope;
 
-export class PostMessageTransport implements Transport {
-    private listener?: (event: MessageEvent) => void;
-    constructor(private readonly target: PostMessageTarget) {
-        //
+export class PostMessageTransport<T extends MessageSender> implements Transport {
+    private readonly cleanup: Array<() => void> = [];
+    constructor(private readonly sender: T) {
+        if (!isPostMessageTarget(sender)) {
+            throw new Error(`Invalid post message target: ${typeof sender} is not a valid post message target`);
+        }
     }
     send(data: SerializableData, transfer?: Transferable[]): void {
-        this.target.postMessage(data, transfer);
+        const sender = this.sender;
+        if (isBroadcastChannel(sender)) {
+            sender.postMessage(data);
+        } else {
+            sender.postMessage(data, transfer ?? []);
+        }
     }
     onMessage(callback: (data: SerializableData) => void): () => void {
-        this.listener = (event: MessageEvent) => {
-            callback(event.data);
-        };
-
-        this.target.addEventListener('message', this.listener);
-
-        return () => {
-            if (this.listener) {
-                this.target.removeEventListener('message', this.listener);
-                this.listener = undefined;
+        const target = this.sender;
+        const listener = (event: Event) => {
+            if (event instanceof MessageEvent) {
+                callback(event.data);
             }
+        };
+        target.addEventListener('message', listener);
+        this.cleanup.push(() => {
+            target.removeEventListener('message', listener);
+        });
+        return () => {
+            target.removeEventListener('message', listener);
         };
     }
     close(): void {
-        if (this.listener) {
-            this.target.removeEventListener('message', this.listener);
-            this.listener = undefined;
-        }
+        this.cleanup.forEach(cleanup => cleanup());
+        this.cleanup.length = 0;
     }
+}
+function isMessagePort(target: MessageSender): target is MessagePort {
+    return target instanceof MessagePort;
+}
+
+function isBroadcastChannel(target: MessageSender): target is BroadcastChannel {
+    return target instanceof BroadcastChannel;
+}
+
+function isServiceWorker(target: MessageSender): target is ServiceWorker {
+    return target instanceof ServiceWorker;
+}
+
+function isDedicatedWorkerGlobalScope(target: MessageSender): target is DedicatedWorkerGlobalScope {
+    if (typeof DedicatedWorkerGlobalScope === 'undefined') {
+        return false;
+    }
+    return target instanceof DedicatedWorkerGlobalScope;
+}
+
+function isPostMessageTarget(target: MessageSender): target is MessageSender {
+    return (
+        isMessagePort(target) ||
+        isBroadcastChannel(target) ||
+        isServiceWorker(target) ||
+        isDedicatedWorkerGlobalScope(target)
+    );
 }
