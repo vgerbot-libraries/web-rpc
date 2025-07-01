@@ -36,7 +36,8 @@
         "check:exports": "attw --pack .",
         "test": "vitest --config ../../vitest.config.ts run",
         "test:unit": "vitest --config ../../vitest.config.ts --project unit run",
-        "test:integration": "vitest --config ../../vitest.config.ts --project integration run"
+        "test:integration": "vitest --config ../../vitest.config.ts --project integration run",
+        "test:debug": "vitest --config ../../vitest.config.ts dev"
     },
     "optionalDependencies": {
         "webextension-polyfill": "^0.12.0"
