@@ -1,12 +1,12 @@
 import { vi } from 'vitest';
 import { WebRPC } from '../../src';
-import { MessageChannelTransport } from '../../src/transports';
+import { PostMessageTransport } from '../../src/transports';
 
 describe('WebRPC', () => {
     it('should handle basic method calls', async () => {
         const channel = new MessageChannel();
-        const serverTransport = new MessageChannelTransport({ port: channel.port1 });
-        const clientTransport = new MessageChannelTransport({ port: channel.port2 });
+        const serverTransport = new PostMessageTransport(channel.port1);
+        const clientTransport = new PostMessageTransport(channel.port2);
 
         const server = new WebRPC('test', serverTransport);
         const instance = {
@@ -20,8 +20,8 @@ describe('WebRPC', () => {
 
     it('should handle ArrayBuffer data transfer', async () => {
         const channel = new MessageChannel();
-        const serverTransport = new MessageChannelTransport({ port: channel.port1 });
-        const clientTransport = new MessageChannelTransport({ port: channel.port2 });
+        const serverTransport = new PostMessageTransport(channel.port1);
+        const clientTransport = new PostMessageTransport(channel.port2);
 
         const server = new WebRPC('test', serverTransport);
         const instance = {
@@ -39,8 +39,8 @@ describe('WebRPC', () => {
 
     it('should handle callback functions', async () => {
         const channel = new MessageChannel();
-        const serverTransport = new MessageChannelTransport({ port: channel.port1 });
-        const clientTransport = new MessageChannelTransport({ port: channel.port2 });
+        const serverTransport = new PostMessageTransport(channel.port1);
+        const clientTransport = new PostMessageTransport(channel.port2);
 
         const server = new WebRPC('test', serverTransport);
         const instance = {
@@ -66,8 +66,8 @@ describe('WebRPC', () => {
 
     it('should handle getter properties', async () => {
         const channel = new MessageChannel();
-        const serverTransport = new MessageChannelTransport({ port: channel.port1 });
-        const clientTransport = new MessageChannelTransport({ port: channel.port2 });
+        const serverTransport = new PostMessageTransport(channel.port1);
+        const clientTransport = new PostMessageTransport(channel.port2);
 
         const server = new WebRPC('test', serverTransport);
         const instance = {
@@ -95,7 +95,7 @@ describe('WebRPC', () => {
 
     it('should handle invalid messages gracefully', () => {
         const channel = new MessageChannel();
-        const transport = new MessageChannelTransport({ port: channel.port1 });
+        const transport = new PostMessageTransport(channel.port1);
         const webRPC = new WebRPC('test-client', transport);
 
         // Should not throw when receiving invalid data
@@ -108,7 +108,7 @@ describe('WebRPC', () => {
 
     it('should handle messages for different client IDs', () => {
         const channel = new MessageChannel();
-        const transport = new MessageChannelTransport({ port: channel.port1 });
+        const transport = new PostMessageTransport(channel.port1);
         const webRPC = new WebRPC('test-client', transport);
 
         const invalidMessage = {
@@ -128,8 +128,8 @@ describe('WebRPC', () => {
 
     it('should handle method calls with promises', async () => {
         const channel = new MessageChannel();
-        const serverTransport = new MessageChannelTransport({ port: channel.port1 });
-        const clientTransport = new MessageChannelTransport({ port: channel.port2 });
+        const serverTransport = new PostMessageTransport(channel.port1);
+        const clientTransport = new PostMessageTransport(channel.port2);
 
         const server = new WebRPC('test', serverTransport);
         const instance = {
@@ -148,8 +148,8 @@ describe('WebRPC', () => {
 
     it('should handle method call errors', async () => {
         const channel = new MessageChannel();
-        const serverTransport = new MessageChannelTransport({ port: channel.port1 });
-        const clientTransport = new MessageChannelTransport({ port: channel.port2 });
+        const serverTransport = new PostMessageTransport(channel.port1);
+        const clientTransport = new PostMessageTransport(channel.port2);
 
         const server = new WebRPC('test', serverTransport);
         const instance = {

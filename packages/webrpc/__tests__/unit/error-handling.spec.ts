@@ -1,13 +1,13 @@
 import { vi } from 'vitest';
 import { WebRPC } from '../../src/core/WebRPC';
-import { MessageChannelTransport } from '../../src/transports/MessageChannelTransport';
+import { PostMessageTransport } from '../../src/transports/PostMessageTransport';
 import { SendFunctionTransport } from '../../src/core/SendFunctionTransport';
 
 describe('Error Handling and Edge Cases', () => {
     describe('WebRPC', () => {
         it('should handle invalid messages gracefully', () => {
             const channel = new MessageChannel();
-            const transport = new MessageChannelTransport({ port: channel.port1 });
+            const transport = new PostMessageTransport(channel.port1);
             const webRPC = new WebRPC('test-client', transport);
 
             // Should not throw when receiving invalid data
@@ -20,7 +20,7 @@ describe('Error Handling and Edge Cases', () => {
 
         it('should handle messages for different client IDs', () => {
             const channel = new MessageChannel();
-            const transport = new MessageChannelTransport({ port: channel.port1 });
+            const transport = new PostMessageTransport(channel.port1);
             const webRPC = new WebRPC('test-client', transport);
 
             const invalidMessage = {
@@ -47,7 +47,7 @@ describe('Error Handling and Edge Cases', () => {
 
         it('should handle closing', () => {
             const channel = new MessageChannel();
-            const transport = new MessageChannelTransport({ port: channel.port1 });
+            const transport = new PostMessageTransport(channel.port1);
             const webRPC = new WebRPC('test-client', transport);
 
             expect(() => webRPC.close()).not.toThrow();
@@ -88,7 +88,7 @@ describe('Error Handling and Edge Cases', () => {
     describe('MessageChannelTransport edge cases', () => {
         it('should handle transferable objects without throwing', () => {
             const channel = new MessageChannel();
-            const transport = new MessageChannelTransport({ port: channel.port1 });
+            const transport = new PostMessageTransport(channel.port1);
 
             const testData = { test: 'data' };
             const buffer = new ArrayBuffer(8);
@@ -98,7 +98,7 @@ describe('Error Handling and Edge Cases', () => {
 
         it('should handle multiple cleanup calls', () => {
             const channel = new MessageChannel();
-            const transport = new MessageChannelTransport({ port: channel.port1 });
+            const transport = new PostMessageTransport(channel.port1);
 
             const cleanup = transport.onMessage(() => {});
 
@@ -110,7 +110,7 @@ describe('Error Handling and Edge Cases', () => {
 
         it('should handle close after cleanup', () => {
             const channel = new MessageChannel();
-            const transport = new MessageChannelTransport({ port: channel.port1 });
+            const transport = new PostMessageTransport(channel.port1);
 
             const cleanup = transport.onMessage(() => {});
             cleanup();
