@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 import { WebRPC } from '../../src/core/WebRPC';
-import { MessageChannelTransport } from '../../src/transports/MessagePortTransport';
+import { MessageChannelTransport } from '../../src/transports/MessageChannelTransport';
 import { SendFunctionTransport } from '../../src/core/SendFunctionTransport';
 
 describe('Error Handling and Edge Cases', () => {
