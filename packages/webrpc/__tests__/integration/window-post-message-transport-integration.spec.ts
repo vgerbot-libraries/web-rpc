@@ -6,8 +6,13 @@ describe('WindowPostMessageTransport Integration Tests', () => {
         it('should support communication with iframe', async () => {
             // Create an iframe for testing
             const iframe = document.createElement('iframe');
-            iframe.src =
-                'data:text/html,<script>window.addEventListener("message", e => e.source.postMessage("Echo: " + e.data, "*"));</script>';
+            iframe.srcdoc = `
+                <script>
+                    window.addEventListener("message", e => 
+                        e.source.postMessage("Echo: " + e.data, "*")
+                    );
+                </script>
+            `;
             document.body.appendChild(iframe);
 
             // Wait for iframe to load
@@ -38,8 +43,13 @@ describe('WindowPostMessageTransport Integration Tests', () => {
 
         it('should handle complex data structures with iframe', async () => {
             const iframe = document.createElement('iframe');
-            iframe.src =
-                'data:text/html,<script>window.addEventListener("message", e => e.source.postMessage(e.data, "*"));</script>';
+            iframe.srcdoc = `
+                <script>
+                    window.addEventListener("message", e => 
+                        e.source.postMessage(e.data, "*")
+                    );
+                </script>
+            `;
             document.body.appendChild(iframe);
 
             await new Promise(resolve => {
@@ -71,8 +81,13 @@ describe('WindowPostMessageTransport Integration Tests', () => {
 
         it('should handle transferable objects with iframe', async () => {
             const iframe = document.createElement('iframe');
-            iframe.src =
-                'data:text/html,<script>window.addEventListener("message", e => e.source.postMessage(e.data, "*", e.ports || []));</script>';
+            iframe.srcdoc = `
+                <script>
+                    window.addEventListener("message", e => 
+                        e.source.postMessage(e.data, "*", e.ports || [])
+                    );
+                </script>
+            `;
             document.body.appendChild(iframe);
 
             await new Promise(resolve => {
@@ -109,8 +124,13 @@ describe('WindowPostMessageTransport Integration Tests', () => {
 
         it('should respect origin filtering', async () => {
             const iframe = document.createElement('iframe');
-            iframe.src =
-                'data:text/html,<script>window.addEventListener("message", e => e.source.postMessage("Echo: " + e.data, "*"));</script>';
+            iframe.srcdoc = `
+                <script>
+                    window.addEventListener("message", e => 
+                        e.source.postMessage("Echo: " + e.data, "*")
+                    );
+                </script>
+            `;
             document.body.appendChild(iframe);
 
             await new Promise(resolve => {
@@ -186,8 +206,13 @@ describe('WindowPostMessageTransport Integration Tests', () => {
     describe('Resource Management', () => {
         it('should properly clean up resources on close', async () => {
             const iframe = document.createElement('iframe');
-            iframe.src =
-                'data:text/html,<script>window.addEventListener("message", e => e.source.postMessage("Echo: " + e.data, "*"));</script>';
+            iframe.srcdoc = `
+                <script>
+                    window.addEventListener("message", e => 
+                        e.source.postMessage("Echo: " + e.data, "*")
+                    );
+                </script>
+            `;
             document.body.appendChild(iframe);
 
             await new Promise(resolve => {
@@ -239,8 +264,13 @@ describe('WindowPostMessageTransport Integration Tests', () => {
     describe('Performance', () => {
         it('should handle rapid message sequences', async () => {
             const iframe = document.createElement('iframe');
-            iframe.src =
-                'data:text/html,<script>window.addEventListener("message", e => e.source.postMessage("Response: " + e.data, "*"));</script>';
+            iframe.srcdoc = `
+                <script>
+                    window.addEventListener("message", e => 
+                        e.source.postMessage("Response: " + e.data, "*")
+                    );
+                </script>
+            `;
             document.body.appendChild(iframe);
 
             await new Promise(resolve => {
