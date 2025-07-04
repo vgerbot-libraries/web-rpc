@@ -1,5 +1,6 @@
 import { isFunction } from '../common/isFunction';
 import type { Method } from '../common/Method';
+import type { PromisifyObject } from '../common/PromisifyType';
 import { isRPCMessage } from '../protocol/Message';
 import type { SerializableData } from '../protocol/SerializableData';
 import { SendFunctionTransport } from './SendFunctionTransport';
@@ -42,13 +43,13 @@ export class WebRPC {
         this.ports.set(id, port);
     }
 
-    get<T>(id: string): T {
+    get<T>(id: string): PromisifyObject<T> {
         if (!this.ports.has(id)) {
             const port = new WebRPCPort(this.clientId, id, {}, this.transport);
             this.ports.set(id, port);
         }
         const port = this.ports.get(id)!;
-        return port.remoteImplementation as T;
+        return port.remoteImplementation as PromisifyObject<T>;
     }
 
     close() {
