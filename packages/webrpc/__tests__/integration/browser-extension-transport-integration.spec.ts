@@ -2,7 +2,6 @@ import { BrowserExtensionTransport } from '../../src/transports/BrowserExtension
 import { testDataFixtures } from '../fixtures/data';
 import type browser from 'webextension-polyfill';
 
-
 // Create a mock implementation of browser.runtime.Port
 function createMockPort() {
     const listeners = new Set<(message: unknown) => void>();
@@ -52,10 +51,11 @@ function createMockPortPair(): [browser.Runtime.Port, browser.Runtime.Port] {
             if (!isConnected) {
                 throw new Error('Attempting to use a disconnected port object');
             }
+
             // Send message to port2 listeners
-            setTimeout(() => {
+            Promise.resolve().then(() => {
                 port2Listeners.forEach(listener => listener(message));
-            }, 0);
+            });
         },
         disconnect: () => {
             isConnected = false;
@@ -78,9 +78,9 @@ function createMockPortPair(): [browser.Runtime.Port, browser.Runtime.Port] {
                 throw new Error('Attempting to use a disconnected port object');
             }
             // Send message to port1 listeners
-            setTimeout(() => {
+            Promise.resolve().then(() => {
                 port1Listeners.forEach(listener => listener(message));
-            }, 0);
+            });
         },
         disconnect: () => {
             isConnected = false;
