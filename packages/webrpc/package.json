@@ -8,9 +8,7 @@
         "name": "Chienhsin Yang",
         "email": "y1j2x345@gmail.com"
     },
-    "files": [
-        "lib"
-    ],
+    "files": ["lib"],
     "main": "./lib/index.js",
     "module": "./lib/index.mjs",
     "types": "./lib/index.d.ts",
@@ -37,7 +35,8 @@
         "test": "vitest --config ../../vitest.config.ts run",
         "test:unit": "vitest --config ../../vitest.config.ts --project unit run",
         "test:integration": "vitest --config ../../vitest.config.ts --project integration run",
-        "test:debug": "vitest --config ../../vitest.config.ts dev"
+        "test:debug": "vitest --config ../../vitest.config.ts dev",
+        "docs:api": "typedoc ./src/index.ts"
     },
     "optionalDependencies": {
         "webextension-polyfill": "^0.12.0"

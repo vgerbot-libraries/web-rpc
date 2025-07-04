@@ -13,7 +13,7 @@ describe('WorkerTransport Integration Tests', () => {
             const blob = new Blob([workerScript], { type: 'application/javascript' });
             const worker = new Worker(URL.createObjectURL(blob));
 
-            const transport = new WorkerTransport({ worker });
+            const transport = new WorkerTransport({ target: worker });
 
             const messages: unknown[] = [];
             const cleanup = transport.onMessage(data => {
@@ -41,7 +41,7 @@ describe('WorkerTransport Integration Tests', () => {
             const blob = new Blob([workerScript], { type: 'application/javascript' });
             const worker = new Worker(URL.createObjectURL(blob));
 
-            const transport = new WorkerTransport({ worker });
+            const transport = new WorkerTransport({ target: worker });
 
             const complexData = testDataFixtures.complexData.deeplyNested;
             let receivedData: unknown;
@@ -71,7 +71,7 @@ describe('WorkerTransport Integration Tests', () => {
             const blob = new Blob([workerScript], { type: 'application/javascript' });
             const worker = new Worker(URL.createObjectURL(blob));
 
-            const transport = new WorkerTransport({ worker });
+            const transport = new WorkerTransport({ target: worker });
 
             const buffer = new ArrayBuffer(1024);
             const view = new Uint8Array(buffer);
@@ -108,7 +108,7 @@ describe('WorkerTransport Integration Tests', () => {
             const blob = new Blob([workerScript], { type: 'application/javascript' });
             const worker = new Worker(URL.createObjectURL(blob));
 
-            const transport = new WorkerTransport({ worker });
+            const transport = new WorkerTransport({ target: worker });
 
             const messages: unknown[] = [];
             const cleanup = transport.onMessage(data => {
@@ -142,7 +142,7 @@ describe('WorkerTransport Integration Tests', () => {
             const blob = new Blob([workerScript], { type: 'application/javascript' });
             const worker = new Worker(URL.createObjectURL(blob));
 
-            const transport = new WorkerTransport({ worker });
+            const transport = new WorkerTransport({ target: worker });
 
             const cleanup = transport.onMessage(() => {});
 
