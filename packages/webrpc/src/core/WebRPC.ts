@@ -19,7 +19,7 @@ import { WebRPCPort } from './WebRPCPort';
  * ```typescript
  * // Create WebRPC instance with a transport function
  * const worker = new Worker('worker.js');
- * const webRPC = new WebRPC('client-1', new WorkerTransport({ worker }));
+ * const webRPC = new WebRPC('client-1', new PostMessageTransport(worker));
  *
  * // Register a service
  * webRPC.register('math', {

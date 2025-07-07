@@ -27,6 +27,9 @@ import type { SerializableData } from '../protocol/SerializableData';
  *     this.worker.terminate();
  *   }
  * }
+ *
+ * // Or use the built-in PostMessageTransport:
+ * const transport = new PostMessageTransport(worker);
  * ```
  */
 export interface Transport {

@@ -182,18 +182,18 @@ const channel = new BroadcastChannel('my-channel');
 const transport = new PostMessageTransport(channel);
 ```
 
-### WorkerTransport
-For communication with Web Workers:
+### PostMessageTransport for Workers
+For communication with Web Workers using PostMessageTransport:
 
 ```typescript
-import { WorkerTransport } from '@vgerbot/web-rpc';
+import { PostMessageTransport } from '@vgerbot/web-rpc';
 
 // Main thread
 const worker = new Worker('./worker.js');
-const transport = new WorkerTransport(worker);
+const transport = new PostMessageTransport(worker);
 
 // Worker thread (worker.js)
-const transport = new WorkerTransport(self);
+const transport = new PostMessageTransport(self);
 ```
 
 ### BroadcastChannelTransport
@@ -331,10 +331,10 @@ try {
 
 ```typescript
 // main.ts
-import { WebRPC, WorkerTransport } from '@vgerbot/web-rpc';
+import { WebRPC, PostMessageTransport } from '@vgerbot/web-rpc';
 
 const worker = new Worker('./calculation-worker.js');
-const transport = new WorkerTransport(worker);
+const transport = new PostMessageTransport(worker);
 const client = new WebRPC('calculator-service', transport);
 
 const calculator = client.get<{
@@ -348,9 +348,9 @@ const isPrime17 = await calculator.isPrime(17);
 
 ```typescript
 // calculation-worker.js
-import { WebRPC, WorkerTransport } from '@vgerbot/web-rpc';
+import { WebRPC, PostMessageTransport } from '@vgerbot/web-rpc';
 
-const transport = new WorkerTransport(self);
+const transport = new PostMessageTransport(self);
 const server = new WebRPC('calculator-service', transport);
 
 const calculatorImpl = {

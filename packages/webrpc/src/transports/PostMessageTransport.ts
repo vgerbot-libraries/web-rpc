@@ -1,16 +1,16 @@
 import type { Transport } from '../core/Transport';
 import type { SerializableData } from '../protocol/SerializableData';
 
-type MessageSender = MessagePort | BroadcastChannel | ServiceWorker | DedicatedWorkerGlobalScope;
+type MessageSender = Worker | MessagePort | BroadcastChannel | ServiceWorker | DedicatedWorkerGlobalScope;
 
 /**
  * PostMessageTransport provides a generic Transport implementation for various message-based communication channels.
  *
  * This transport supports multiple types of message senders, making it versatile for different communication
- * scenarios including MessageChannel, BroadcastChannel, ServiceWorker, and DedicatedWorkerGlobalScope.
+ * scenarios including MessageChannel, BroadcastChannel, ServiceWorker, Worker, and DedicatedWorkerGlobalScope.
  * It automatically handles the differences between these communication mechanisms.
  *
- * @template T - The type of message sender (MessagePort, BroadcastChannel, ServiceWorker, or
+ * @template T - The type of message sender (MessagePort, BroadcastChannel, ServiceWorker, Worker, or
  * DedicatedWorkerGlobalScope)
  *
  * @example
@@ -58,6 +58,20 @@ type MessageSender = MessagePort | BroadcastChannel | ServiceWorker | DedicatedW
  *
  * @example
  * ```typescript
+ * // Worker example (for main thread to worker communication)
+ * const worker = new Worker('./worker.js');
+ * const transport = new PostMessageTransport(worker);
+ * const webRPC = new WebRPC('main-thread', transport);
+ *
+ * const workerAPI = webRPC.get<{
+ *   processData: (data: number[]) => Promise<number>;
+ * }>('processor');
+ *
+ * const result = await workerAPI.processData([1, 2, 3, 4, 5]);
+ * ```
+ *
+ * @example
+ * ```typescript
  * // DedicatedWorkerGlobalScope example (inside a worker)
  * // worker.js
  * const transport = new PostMessageTransport(self);
@@ -72,7 +86,7 @@ type MessageSender = MessagePort | BroadcastChannel | ServiceWorker | DedicatedW
  *
  * @example
  * ```typescript
- * // Transferable objects example (works with MessagePort, ServiceWorker, and DedicatedWorkerGlobalScope)
+ * // Transferable objects example (works with MessagePort, ServiceWorker, Worker, and DedicatedWorkerGlobalScope)
  * const channel = new MessageChannel();
  * const transport = new PostMessageTransport(channel.port1);
  *
@@ -131,6 +145,10 @@ function isServiceWorker(target: MessageSender): target is ServiceWorker {
     return target instanceof ServiceWorker;
 }
 
+function isWorker(target: MessageSender): target is Worker {
+    return target instanceof Worker;
+}
+
 function isDedicatedWorkerGlobalScope(target: MessageSender): target is DedicatedWorkerGlobalScope {
     if (typeof DedicatedWorkerGlobalScope === 'undefined') {
         return false;
@@ -143,6 +161,7 @@ function isPostMessageTarget(target: MessageSender): target is MessageSender {
         isMessagePort(target) ||
         isBroadcastChannel(target) ||
         isServiceWorker(target) ||
+        isWorker(target) ||
         isDedicatedWorkerGlobalScope(target)
     );
 }

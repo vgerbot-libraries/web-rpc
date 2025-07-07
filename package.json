@@ -63,7 +63,7 @@
     "pre-commit": "lint-staged",
     "lint-staged": {
         "*.{js,ts,cjs,mjs}": ["eslint --fix", "prettier --write"],
-        "*.{md,json,jsonc}": ["prettier --write"]
+        "*.{json,jsonc}": ["prettier --write"]
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"
