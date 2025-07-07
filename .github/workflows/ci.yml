@@ -70,7 +70,7 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: packages/webrpc/coverage/lcov.info
+          coverage-reports: packages/webrpc/coverage/cobertura-coverage.xml
 
   build-matrix:
     name: Build Matrix
