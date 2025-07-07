@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Constructor<T> {
     readonly prototype: T;
     new (...args: unknown[]): T;
