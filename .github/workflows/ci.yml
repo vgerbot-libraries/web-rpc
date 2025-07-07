@@ -66,14 +66,11 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-      - name: Upload coverage reports
-        if: matrix.node-version == 20
-        uses: codecov/codecov-action@v5
+      - name: Run Codacy Coverage Reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
         with:
-          files: ./coverage/lcov.info
-          fail_ci_if_error: false
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: packages/webrpc/coverage/lcov.info
 
   build-matrix:
     name: Build Matrix
