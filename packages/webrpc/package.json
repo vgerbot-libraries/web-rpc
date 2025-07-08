@@ -2,7 +2,7 @@
     "name": "@vgerbot/web-rpc",
     "private": false,
     "version": "1.0.0",
-    "description": "Demo library that contains common utility functions",
+    "description": "A TypeScript library that provides type-safe Remote Procedure Call (RPC) communication between different JavaScript contexts using various transport mechanisms",
     "repository": "https://github.com/vgerbot-libraries/web-rpc.git",
     "author": {
         "name": "Chienhsin Yang",
