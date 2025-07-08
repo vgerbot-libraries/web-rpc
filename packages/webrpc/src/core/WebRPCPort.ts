@@ -41,40 +41,40 @@ export class WebRPCPort {
     constructor(
         private readonly clientId: string,
         private readonly portId: string,
-        private readonly instance: Record<string, Method>,
+        private readonly localInstance: Record<string, Method>,
         private readonly transport: Transport
     ) {
         //
     }
 
-    receive(req: RPCMessage) {
-        switch (req.action) {
+    receive(message: RPCMessage) {
+        switch (message.action) {
             case 'method-call':
-                this.handleMethodCall(req as CallMethodMessage);
+                this.handleMethodCall(message as CallMethodMessage);
                 break;
             case 'method-return':
-                this.handleMethodReturn(req as ReturnMethodMessage);
+                this.handleMethodReturn(message as ReturnMethodMessage);
                 break;
         }
     }
-    private async invokeRemoteMethod(method: string, args: unknown[]): Promise<unknown> {
+    private async invokeRemoteMethod(methodName: string, args: unknown[]): Promise<unknown> {
         const invocationId = uid('invocation-********');
         const { data, transferables, functions } = serializeRequestData(this.portId, args);
         const defer = new Defer<unknown>();
 
-        functions.forEach((func, id) => {
-            this.callbacks.set(id, func as Method);
+        functions.forEach((func, functionId) => {
+            this.callbacks.set(functionId, func as Method);
         });
 
         const req: CallMethodMessage = {
             invocationId: {
                 clientId: this.clientId,
                 portId: this.portId,
-                method,
-                invocationId,
+                method: methodName,
+                id: invocationId,
             },
             action: 'method-call',
-            method,
+            method: methodName,
             args: data as SerializableData[],
             timestamp: Date.now(),
         };
@@ -85,38 +85,38 @@ export class WebRPCPort {
         return defer.promise;
     }
 
-    private handleMethodCall(req: CallMethodMessage) {
-        const invocationId = req.invocationId;
-        const args = deserializeRequestData(req.args, (callbackId, args) => {
+    private handleMethodCall(message: CallMethodMessage) {
+        const invocationId = message.invocationId;
+        const args = deserializeRequestData(message.args, (callbackId, args) => {
             return this.invokeRemoteMethod(callbackId, args);
         });
         let method: Method | undefined;
-        if (Object.prototype.hasOwnProperty.call(this.instance, req.method)) {
-            method = (this.instance[req.method] as Method).bind(this.instance);
+        if (Object.prototype.hasOwnProperty.call(this.localInstance, message.method)) {
+            method = (this.localInstance[message.method] as Method).bind(this.localInstance);
         } else {
-            method = this.callbacks.get(req.method);
+            method = this.callbacks.get(message.method);
         }
         if (!isFunction(method)) {
-            throw new Error(`Method not found: ${req.method}`);
+            throw new Error(`Method not found: ${message.method}`);
         }
         this.invokeLocalMethod(invocationId, method, args);
     }
     private invokeLocalMethod(invocationId: InvocationId, method: Method, args: unknown[]) {
-        const onfulfilled = (result: unknown) => {
+        const handleSuccess = (result: unknown) => {
             const { data, transferables, functions } = serializeRequestData(this.portId, [result]);
             functions.forEach((func, functionId) => {
                 this.callbacks.set(functionId, func);
             });
-            const ret: ReturnMethodMessage = {
+            const response: ReturnMethodMessage = {
                 invocationId,
                 action: 'method-return',
                 status: 'success',
                 result: data[0] as SerializableData,
                 timestamp: Date.now(),
             };
-            this.transport.send(ret as unknown as SerializableData, Array.from(transferables));
+            this.transport.send(response as unknown as SerializableData, Array.from(transferables));
         };
-        const onrejected = (reason: unknown) => {
+        const handleError = (reason: unknown) => {
             const ret: ReturnMethodMessage = {
                 invocationId,
                 action: 'method-return',
@@ -132,27 +132,27 @@ export class WebRPCPort {
         try {
             const result = method(...args);
             if (isPromiseLike(result)) {
-                result.then(onfulfilled, onrejected);
+                result.then(handleSuccess, handleError);
             } else {
-                onfulfilled(result);
+                handleSuccess(result);
             }
         } catch (e) {
-            onrejected(e);
+            handleError(e);
         }
     }
 
-    private handleMethodReturn(req: ReturnMethodMessage) {
-        const defer = this.invocationDefers.get(req.invocationId.invocationId);
+    private handleMethodReturn(message: ReturnMethodMessage) {
+        const defer = this.invocationDefers.get(message.invocationId.id);
         if (defer) {
-            if (req.status === 'success') {
-                const result = deserializeRequestData([req.result], (callbackId, args) => {
-                    return this.invokeRemoteMethod(callbackId, args);
+            if (message.status === 'success') {
+                const result = deserializeRequestData([message.result], (callbackId, callbackArgs) => {
+                    return this.invokeRemoteMethod(callbackId, callbackArgs);
                 })[0];
                 defer.resolve(result);
             } else {
-                defer.reject(req.error);
+                defer.reject(message.error);
             }
         }
-        this.invocationDefers.delete(req.invocationId.invocationId);
+        this.invocationDefers.delete(message.invocationId.id);
     }
 }
