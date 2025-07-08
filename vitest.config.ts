@@ -12,7 +12,7 @@ export default defineConfig({
         coverage: {
             enabled: true,
             provider: 'istanbul',
-            reporter: ['text', 'json', 'html', 'cobertura'],
+            reporter: ['text', 'html', 'cobertura'],
             reportsDirectory: './coverage',
             exclude: [
                 '**/node_modules/**',
