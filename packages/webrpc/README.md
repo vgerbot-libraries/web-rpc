@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/y1j2x34/tsup-vitest-monorepo-boilerplate/actions/workflows/ci.yml/badge.svg)](https://github.com/y1j2x34/tsup-vitest-monorepo-boilerplate/actions/workflows/ci.yml)
 [![Release](https://github.com/y1j2x34/tsup-vitest-monorepo-boilerplate/actions/workflows/release.yml/badge.svg)](https://github.com/y1j2x34/tsup-vitest-monorepo-boilerplate/actions/workflows/release.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5651fd01442f4fe197ed3c8a748a352e)](https://app.codacy.com/gh/vgerbot-libraries/web-rpc/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/5651fd01442f4fe197ed3c8a748a352e)](https://app.codacy.com/gh/vgerbot-libraries/web-rpc/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 
 A TypeScript library that provides type-safe Remote Procedure Call (RPC) communication between different JavaScript contexts using various transport mechanisms.
 
@@ -107,6 +109,7 @@ anotherContext.addEventListener('message', (event) => {
 ```
 
 This approach is useful when:
+
 - Integrating with existing message systems
 - Adding custom message routing logic
 - Working with non-standard communication channels
@@ -169,6 +172,7 @@ window.addEventListener('message', (event) => {
 ## 🛠️ Available Transports
 
 ### PostMessageTransport
+
 For communication via MessagePort, BroadcastChannel, ServiceWorker, or DedicatedWorkerGlobalScope:
 
 ```typescript
@@ -183,6 +187,7 @@ const transport = new PostMessageTransport(channel);
 ```
 
 ### PostMessageTransport for Workers
+
 For communication with Web Workers using PostMessageTransport:
 
 ```typescript
@@ -197,6 +202,7 @@ const transport = new PostMessageTransport(self);
 ```
 
 ### BroadcastChannelTransport
+
 For cross-tab communication:
 
 ```typescript
@@ -206,6 +212,7 @@ const transport = new BroadcastChannelTransport('my-channel');
 ```
 
 ### WindowPostMessageTransport
+
 For iframe and popup communication:
 
 ```typescript
@@ -222,6 +229,7 @@ const transport = new WindowPostMessageTransport(window.parent, '*');
 ```
 
 ### BrowserExtensionTransport
+
 For browser extension communication:
 
 ```typescript

@@ -1,7 +1,7 @@
 {
     "name": "@vgerbot/web-rpc-root",
     "version": "1.0.0",
-    "description": "",
+    "description": "A TypeScript library that provides type-safe Remote Procedure Call (RPC) communication between different JavaScript contexts using various transport mechanisms",
     "type": "module",
     "main": "index.js",
     "scripts": {

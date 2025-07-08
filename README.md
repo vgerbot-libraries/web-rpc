@@ -109,6 +109,7 @@ anotherContext.addEventListener('message', (event) => {
 ```
 
 This approach is useful when:
+
 - Integrating with existing message systems
 - Adding custom message routing logic
 - Working with non-standard communication channels
@@ -171,6 +172,7 @@ window.addEventListener('message', (event) => {
 ## 🛠️ Available Transports
 
 ### PostMessageTransport
+
 For communication via MessagePort, BroadcastChannel, ServiceWorker, or DedicatedWorkerGlobalScope:
 
 ```typescript
@@ -185,6 +187,7 @@ const transport = new PostMessageTransport(channel);
 ```
 
 ### PostMessageTransport for Workers
+
 For communication with Web Workers using PostMessageTransport:
 
 ```typescript
@@ -199,6 +202,7 @@ const transport = new PostMessageTransport(self);
 ```
 
 ### BroadcastChannelTransport
+
 For cross-tab communication:
 
 ```typescript
@@ -208,6 +212,7 @@ const transport = new BroadcastChannelTransport('my-channel');
 ```
 
 ### WindowPostMessageTransport
+
 For iframe and popup communication:
 
 ```typescript
@@ -224,6 +229,7 @@ const transport = new WindowPostMessageTransport(window.parent, '*');
 ```
 
 ### BrowserExtensionTransport
+
 For browser extension communication:
 
 ```typescript
