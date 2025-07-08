@@ -121,14 +121,14 @@ importers:
         version: link:../webrpc
 
   packages/webrpc:
+    dependencies:
+      webextension-polyfill:
+        specifier: ^0.12.0
+        version: 0.12.0
     devDependencies:
       '@types/webextension-polyfill':
         specifier: ^0.12.3
         version: 0.12.3
-    optionalDependencies:
-      webextension-polyfill:
-        specifier: ^0.12.0
-        version: 0.12.0
 
 packages:
 
@@ -6513,8 +6513,7 @@ snapshots:
     dependencies:
       defaults: 1.0.4
 
-  webextension-polyfill@0.12.0:
-    optional: true
+  webextension-polyfill@0.12.0: {}
 
   webidl-conversions@4.0.2: {}
 
