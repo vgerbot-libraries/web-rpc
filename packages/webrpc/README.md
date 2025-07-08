@@ -230,14 +230,64 @@ const transport = new WindowPostMessageTransport(window.parent, '*');
 
 ### BrowserExtensionTransport
 
-For browser extension communication:
+For **cross-browser extension communication** (Chrome, Firefox, Safari, Edge):
+
+**Prerequisites**: Install `webextension-polyfill` for cross-browser compatibility:
+
+```bash
+npm install webextension-polyfill
+```
+
+This transport uses the [WebExtension browser API Polyfill](https://github.com/mozilla/webextension-polyfill) to provide:
+- **Unified API**: Use `browser.*` namespace across all browsers instead of `chrome.*`
+- **Promise-based**: Consistent Promise support across Chrome, Firefox, Safari, and Edge
+- **Cross-browser compatibility**: Handle differences in extension APIs between browsers
 
 ```typescript
 import { BrowserExtensionTransport } from '@vgerbot/web-rpc';
+import browser from 'webextension-polyfill';
 
-// Content script or popup
-const transport = new BrowserExtensionTransport();
+// Background script - works on Chrome, Firefox, Safari, Edge
+browser.runtime.onConnect.addListener((port) => {
+  if (port.name === 'webRPC') {
+    const transport = new BrowserExtensionTransport({ port });
+    const webRPC = new WebRPC('background', transport);
+    
+    // Register background services
+    webRPC.register('storage', {
+      getData: async (key: string) => {
+        const result = await browser.storage.sync.get(key);
+        return result[key];
+      },
+      setData: async (key: string, value: any) => {
+        await browser.storage.sync.set({ [key]: value });
+        return true;
+      }
+    });
+  }
+});
+
+// Content script or popup - works on all browsers
+const port = browser.runtime.connect({ name: 'webRPC' });
+const transport = new BrowserExtensionTransport({ port });
+const webRPC = new WebRPC('content', transport);
+
+// Get background services
+const storage = webRPC.get<{
+  getData: (key: string) => Promise<any>;
+  setData: (key: string, value: any) => Promise<boolean>;
+}>('storage');
+
+// Use the services
+const userData = await storage.getData('user');
+await storage.setData('lastVisit', new Date().toISOString());
 ```
+
+**Why use webextension-polyfill?**
+- **Chrome**: Uses `chrome.*` namespace with callbacks
+- **Firefox/Safari**: Use `browser.*` namespace with Promises  
+- **Edge**: Uses `chrome.*` namespace (Chromium-based)
+- **This polyfill**: Provides unified `browser.*` Promise-based API for all browsers
 
 ## 🎯 Advanced Features
 

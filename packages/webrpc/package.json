@@ -4,6 +4,36 @@
     "version": "1.0.0",
     "description": "A TypeScript library that provides type-safe Remote Procedure Call (RPC) communication between different JavaScript contexts using various transport mechanisms",
     "repository": "https://github.com/vgerbot-libraries/web-rpc.git",
+    "homepage": "https://github.com/vgerbot-libraries/web-rpc/tree/master/packages/webrpc",
+    "keywords": [
+        "rpc",
+        "channel",
+        "jsrpc",
+        "tsrpc",
+        "webrpc",
+        "postmessage",
+        "webworker",
+        "serviceworker",
+        "broadcastchannel",
+        "transport",
+        "typescript",
+        "javascript",
+        "communication",
+        "ipc",
+        "messaging",
+        "browser",
+        "cross-origin",
+        "iframe",
+        "api",
+        "remote",
+        "proxy",
+        "client-server",
+        "async",
+        "promise",
+        "serialization",
+        "type-safe",
+        "types"
+    ],
     "author": {
         "name": "Chienhsin Yang",
         "email": "y1j2x345@gmail.com"
@@ -38,10 +68,15 @@
         "test:debug": "vitest --config ../../vitest.config.ts dev",
         "docs:api": "typedoc ./src/index.ts"
     },
-    "optionalDependencies": {
-        "webextension-polyfill": "^0.12.0"
-    },
     "devDependencies": {
         "@types/webextension-polyfill": "^0.12.3"
+    },
+    "peerDependencies": {
+        "webextension-polyfill": "^0.12.0"
+    },
+    "peerDependenciesMeta": {
+        "webextension-polyfill": {
+            "optional": true
+        }
     }
 }
