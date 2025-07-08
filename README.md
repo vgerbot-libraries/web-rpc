@@ -201,14 +201,14 @@ const transport = new PostMessageTransport(worker);
 const transport = new PostMessageTransport(self);
 ```
 
-### BroadcastChannelTransport
+### PostMessageTransport (BroadcastChannel)
 
 For cross-tab communication:
 
 ```typescript
-import { BroadcastChannelTransport } from '@vgerbot/web-rpc';
+import { PostMessageTransport } from '@vgerbot/web-rpc';
 
-const transport = new BroadcastChannelTransport('my-channel');
+const transport = new PostMessageTransport(new BroadcastChannel('my-channel'));
 ```
 
 ### WindowPostMessageTransport
@@ -383,9 +383,9 @@ server.register('calculator', calculatorImpl);
 
 ```typescript
 // Tab 1 - Server
-import { WebRPC, BroadcastChannelTransport } from '@vgerbot/web-rpc';
+import { WebRPC, PostMessageTransport } from '@vgerbot/web-rpc';
 
-const transport = new BroadcastChannelTransport('shared-state');
+const transport = new PostMessageTransport(new BroadcastChannel('shared-state'));
 const server = new WebRPC('state-service', transport);
 
 const stateManager = {
@@ -397,7 +397,7 @@ const stateManager = {
 server.register('state', stateManager);
 
 // Tab 2 - Client
-const transport2 = new BroadcastChannelTransport('shared-state');
+const transport2 = new PostMessageTransport(new BroadcastChannel('shared-state'));
 const client = new WebRPC('state-service', transport2);
 
 const remoteState = client.get<typeof stateManager>('state');

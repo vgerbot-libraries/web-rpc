@@ -15,15 +15,16 @@ export default defineConfig({
             reporter: ['text', 'json', 'html', 'cobertura'],
             reportsDirectory: './coverage',
             exclude: [
-                'node_modules/',
-                'dist/',
-                'lib/',
+                '**/node_modules/**',
+                '**/dist/**',
+                '**/lib/**',
                 '**/*.d.ts',
                 '**/*.config.*',
                 '**/coverage/**',
                 '**/__tests__/**',
                 '**/*.spec.*',
                 '**/*.test.*',
+                '**/docs/**',
             ],
             thresholds: {
                 global: {

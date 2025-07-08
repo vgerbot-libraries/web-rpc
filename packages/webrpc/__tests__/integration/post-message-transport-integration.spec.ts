@@ -241,6 +241,102 @@ describe('PostMessageTransport Integration Tests', () => {
             receiverChannel2.close();
             receiverChannel3.close();
         });
+
+        it('should handle rapid message sequences with BroadcastChannel', async () => {
+            const channelName = 'test-post-channel-rapid';
+            const senderChannel = new BroadcastChannel(channelName);
+            const receiverChannel = new BroadcastChannel(channelName);
+            const sender = new PostMessageTransport(senderChannel);
+            const receiver = new PostMessageTransport(receiverChannel);
+
+            const messages: unknown[] = [];
+            const cleanup = receiver.onMessage(data => {
+                messages.push(data);
+            });
+
+            // Send 100 messages rapidly
+            const expectedMessages = Array.from({ length: 100 }, (_, i) => `message-${i}`);
+            expectedMessages.forEach(msg => sender.send(msg));
+
+            // Wait for all messages to be delivered
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            expect(messages).toHaveLength(100);
+            expectedMessages.forEach(msg => {
+                expect(messages).toContain(msg);
+            });
+
+            cleanup();
+            sender.close();
+            receiver.close();
+            senderChannel.close();
+            receiverChannel.close();
+        });
+
+        it('should not receive messages from different BroadcastChannels', async () => {
+            const channel1 = new BroadcastChannel('channel-a');
+            const channel2 = new BroadcastChannel('channel-b');
+            const transport1 = new PostMessageTransport(channel1);
+            const transport2 = new PostMessageTransport(channel2);
+
+            const messages1: unknown[] = [];
+            const messages2: unknown[] = [];
+
+            const cleanup1 = transport1.onMessage(data => messages1.push(data));
+            const cleanup2 = transport2.onMessage(data => messages2.push(data));
+
+            // Send messages on different channels
+            transport1.send('message on channel A');
+            transport2.send('message on channel B');
+
+            await new Promise(resolve => setTimeout(resolve, 50));
+
+            expect(messages1).not.toContain('message on channel B');
+            expect(messages2).not.toContain('message on channel A');
+            expect(messages1).toHaveLength(0);
+            expect(messages2).toHaveLength(0);
+
+            cleanup1();
+            cleanup2();
+            transport1.close();
+            transport2.close();
+            channel1.close();
+            channel2.close();
+        });
+
+        it('should handle large messages efficiently with BroadcastChannel', async () => {
+            const channelName = 'test-post-channel-large';
+            const senderChannel = new BroadcastChannel(channelName);
+            const receiverChannel = new BroadcastChannel(channelName);
+            const sender = new PostMessageTransport(senderChannel);
+            const receiver = new PostMessageTransport(receiverChannel);
+
+            // Create a large message (1MB of data)
+            const largeData = 'x'.repeat(1024 * 1024);
+            let receivedData: unknown;
+
+            const cleanup = receiver.onMessage(data => {
+                receivedData = data;
+            });
+
+            const startTime = performance.now();
+            sender.send(largeData);
+
+            // Wait for message delivery
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            const endTime = performance.now();
+            const duration = endTime - startTime;
+
+            expect(receivedData).toBe(largeData);
+            expect(duration).toBeLessThan(1000); // Should complete within 1 second
+
+            cleanup();
+            sender.close();
+            receiver.close();
+            senderChannel.close();
+            receiverChannel.close();
+        });
     });
 
     describe('Worker Communication', () => {
