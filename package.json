@@ -17,10 +17,9 @@
         "changeset": "changeset",
         "changeset:version": "changeset version",
         "changeset:publish": "changeset publish",
-        "prepare": "(is-ci || husky) && playwright install",
+        "postinstall": "(is-ci || husky) && playwright install",
         "tsc": "tsc --noEmit --project tsconfig.source.json && tsc --noEmit --project tsconfig.test.json && tsc --noEmit --project tsconfig.devtools.json"
     },
-    "keywords": ["typescript", "monorepo", "tsup", "vitest", "boilerplate"],
     "author": "Chienhsin Yang <y1j2x345@gmail.com>",
     "license": "MIT",
     "devDependencies": {
