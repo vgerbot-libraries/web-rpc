@@ -493,9 +493,21 @@ interface Transport {
 
 1. Fork the repository
 2. Create your feature branch
-3. Commit your changes with conventional commits
-4. Push to the branch
-5. Create a Pull Request
+3. Make your changes
+4. **Add a changeset** for your changes:
+   ```bash
+   pnpm changeset
+   ```
+   Follow the prompts to describe your changes and select the appropriate version bump type.
+5. Commit your changes with conventional commits (including the changeset file)
+6. Push to the branch
+7. Create a Pull Request
+
+### About Changesets
+
+This project uses [Changeset](https://github.com/changesets/changesets) for version management. Every pull request that changes functionality should include a changeset file describing the changes. See [.changeset/README.md](.changeset/README.md) for detailed instructions.
+
+**Note**: The changeset check in CI will fail if you don't include a changeset file with your PR (unless it's a changeset release PR).
 
 ## 📄 License
 
