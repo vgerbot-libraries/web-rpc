@@ -5,6 +5,16 @@ export default defineConfig({
     dts: true,
     minify: false,
 
-    format: ['cjs', 'esm'],
+    format: ['cjs', 'esm', 'iife'],
     outDir: 'lib',
+    globalName: 'WebRPCLib',
+    footer: ctx => {
+        if (ctx.format === 'iife') {
+            return {
+                js: 'globalThis.WebRPC = WebRPCLib.WebRPC;',
+            };
+        } else {
+            return {};
+        }
+    },
 });

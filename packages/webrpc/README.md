@@ -19,8 +19,41 @@ A TypeScript library that provides type-safe Remote Procedure Call (RPC) communi
 
 ## 📦 Installation
 
+### NPM
+
 ```bash
 npm install @vgerbot/web-rpc
+```
+
+### CDN
+
+#### ES Modules (Modern Browsers)
+
+```html
+<script type="module">
+  // Choose either jsdelivr or unpkg:
+  // import { WebRPC, PostMessageTransport } from 'https://cdn.jsdelivr.net/npm/@vgerbot/web-rpc/lib/index.mjs';
+  import { WebRPC, PostMessageTransport } from 'https://unpkg.com/@vgerbot/web-rpc/lib/index.mjs';
+  
+  // Your code here
+  const transport = new PostMessageTransport(/* ... */);
+  const rpc = new WebRPC('my-service', transport);
+</script>
+```
+
+#### Browser Global (IIFE)
+
+```html
+<!-- Choose either jsdelivr or unpkg: -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/@vgerbot/web-rpc/lib/index.global.js"></script> -->
+<script src="https://unpkg.com/@vgerbot/web-rpc/lib/index.global.js"></script>
+<script>
+  // Available as global WebRPC
+  const { WebRPC, PostMessageTransport } = WebRPC;
+  
+  const transport = new PostMessageTransport(/* ... */);
+  const rpc = new WebRPC('my-service', transport);
+</script>
 ```
 
 ## 🚀 Quick Start

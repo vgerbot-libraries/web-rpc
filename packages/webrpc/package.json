@@ -44,9 +44,12 @@
     "main": "./lib/index.js",
     "module": "./lib/index.mjs",
     "types": "./lib/index.d.ts",
-    "__exports-comment": "// Define output files for Node.js export maps (https://nodejs.org/api/packages.html#exports)",
+    "browser": "./lib/index.global.js",
+    "unpkg": "./lib/index.global.js",
+    "jsdelivr": "./lib/index.global.js",
     "exports": {
         ".": {
+            "browser": "./lib/index.global.js",
             "import": {
                 "@vgerbot/source": "./src/index.ts",
                 "types": "./lib/index.d.mts",
