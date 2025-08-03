@@ -42,22 +42,17 @@
     "main": "./lib/index.js",
     "module": "./lib/index.mjs",
     "types": "./lib/index.d.ts",
-    "browser": "./lib/index.global.js",
     "unpkg": "./lib/index.global.js",
     "jsdelivr": "./lib/index.global.js",
     "exports": {
         ".": {
-            "browser": "./lib/index.global.js",
-            "import": {
-                "@vgerbot/source": "./src/index.ts",
-                "types": "./lib/index.d.mts",
-                "default": "./lib/index.mjs"
+            "types": {
+                "import": "./lib/index.d.mts",
+                "require": "./lib/index.d.ts",
+                "default": "./lib/index.d.ts"
             },
-            "require": {
-                "@vgerbot/source": "./src/index.ts",
-                "types": "./lib/index.d.ts",
-                "default": "./lib/index.js"
-            }
+            "import": "./lib/index.mjs",
+            "require": "./lib/index.js"
         },
         "./package.json": "./package.json"
     },
