@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
-import { WebRPC } from '../../src';
-import { PostMessageTransport } from '../../src/transports';
+import { WebRPC } from '../../src/core/WebRPC';
+import { PostMessageTransport } from '../../src/transports/PostMessageTransport';
+import { createInvocationId, parseInvocationId, createSafeId } from '../../src/protocol/InvocationId';
 
 describe('WebRPC', () => {
     it('should handle basic method calls', async () => {
@@ -112,14 +113,13 @@ describe('WebRPC', () => {
         const webRPC = new WebRPC('test-client', transport);
 
         const invalidMessage = {
-            type: 'method-call',
-            invocationId: {
-                clientId: 'different-client',
-                portId: 'test-port',
-                callId: 'test-call',
+            id: 'different-client/test-port/test-call',
+            _webrpc: {
+                action: 'method-call',
+                timestamp: Date.now(),
             },
             method: 'test',
-            args: [],
+            params: [],
         };
 
         // Should ignore messages for different clients
@@ -162,5 +162,49 @@ describe('WebRPC', () => {
         const remoteInstance = client.get<typeof instance>('errorTester')!;
 
         await expect(remoteInstance.throwError()).rejects.toThrow('Test error');
+    });
+
+    it('should reject clientId with forward slashes', () => {
+        const channel = new MessageChannel();
+        const transport = new PostMessageTransport(channel.port1);
+
+        expect(() => new WebRPC('test/client', transport)).toThrow('ID cannot contain forward slashes: test/client');
+    });
+
+    it('should reject portId with forward slashes', () => {
+        const channel = new MessageChannel();
+        const transport = new PostMessageTransport(channel.port1);
+        const webRPC = new WebRPC('test', transport);
+
+        expect(() => webRPC.register('test/port', {})).toThrow('ID cannot contain forward slashes: test/port');
+    });
+
+    it('should accept valid clientId and portId', () => {
+        const channel = new MessageChannel();
+        const transport = new PostMessageTransport(channel.port1);
+        const webRPC = new WebRPC('test-client', transport);
+
+        expect(() => webRPC.register('test-port', {})).not.toThrow();
+    });
+
+    it('should correctly parse InvocationId', () => {
+        const clientId = createSafeId('test-client');
+        const portId = createSafeId('test-port');
+        const actionId = 'action-123';
+
+        const invocationId = createInvocationId(clientId, portId, actionId);
+        const parsed = parseInvocationId(invocationId);
+
+        expect(parsed.clientId).toBe(clientId);
+        expect(parsed.portId).toBe(portId);
+        expect(parsed.id).toBe(actionId);
+    });
+
+    it('should throw error for invalid InvocationId format', () => {
+        expect(() => parseInvocationId('invalid-format' as any)).toThrow('Invalid InvocationId format: invalid-format');
+        expect(() => parseInvocationId('part1/part2' as any)).toThrow('Invalid InvocationId format: part1/part2');
+        expect(() => parseInvocationId('part1/part2/part3/part4' as any)).toThrow(
+            'Invalid InvocationId format: part1/part2/part3/part4'
+        );
     });
 });

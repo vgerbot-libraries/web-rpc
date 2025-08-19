@@ -4,27 +4,38 @@ import type { InvocationId } from './InvocationId';
 import type { SerializableData } from './SerializableData';
 
 export interface RPCMessage {
-    invocationId: InvocationId;
-    action: 'method-call' | 'method-return';
-    timestamp: number;
+    id: InvocationId;
+    _webrpc: {
+        action: 'method-call' | 'method-return';
+        timestamp: number;
+    };
 }
+
 export interface CallMethodMessage extends RPCMessage {
-    action: 'method-call';
+    _webrpc: {
+        action: 'method-call';
+        timestamp: number;
+    };
     method: string;
-    args: SerializableData[];
+    params: SerializableData[];
 }
+
 export interface ReturnMethodMessage extends RPCMessage {
-    action: 'method-return';
-    status: 'success' | 'error';
+    _webrpc: {
+        action: 'method-return';
+        timestamp: number;
+    };
     result?: SerializableData;
     error?: ErrorInfo;
 }
+
 export function isRPCMessage(data: unknown): data is RPCMessage {
     return (
         isPlainObject(data) &&
-        typeof data.invocationId === 'object' &&
-        typeof data.action === 'string' &&
-        typeof data.timestamp === 'number' &&
-        (data.action === 'method-call' || data.action === 'method-return')
+        typeof data.id === 'string' &&
+        isPlainObject(data._webrpc) &&
+        typeof data._webrpc.action === 'string' &&
+        typeof data._webrpc.timestamp === 'number' &&
+        (data._webrpc.action === 'method-call' || data._webrpc.action === 'method-return')
     );
 }

@@ -24,14 +24,13 @@ describe('Error Handling and Edge Cases', () => {
             const webRPC = new WebRPC('test-client', transport);
 
             const invalidMessage = {
-                type: 'method-call',
-                invocationId: {
-                    clientId: 'different-client',
-                    portId: 'test-port',
-                    callId: 'test-call',
+                id: 'different-client/test-port/test-call',
+                _webrpc: {
+                    action: 'method-call',
+                    timestamp: Date.now(),
                 },
                 method: 'test',
-                args: [],
+                params: [],
             };
 
             // Should ignore messages for different clients
