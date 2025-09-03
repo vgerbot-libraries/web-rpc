@@ -6,6 +6,8 @@ import type { SerializableData } from '../protocol/SerializableData';
 import { SendFunctionTransport } from './SendFunctionTransport';
 import type { Transport } from './Transport';
 import { WebRPCPort } from './WebRPCPort';
+import type { SafeId } from '../protocol/InvocationId';
+import { createSafeId, parseInvocationId } from '../protocol/InvocationId';
 
 /**
  * WebRPC is a remote procedure call (RPC) system that enables seamless communication
@@ -40,17 +42,21 @@ import { WebRPCPort } from './WebRPCPort';
 export class WebRPC {
     private readonly ports: Map<string, WebRPCPort> = new Map();
     private readonly transport: Transport;
+    private readonly clientId: SafeId;
 
     /**
      * Creates a new WebRPC instance.
      *
-     * @param clientId - A unique identifier for this client instance
+     * @param clientId - A unique identifier for this client instance (cannot contain forward slashes)
      * @param transport - Either a Transport object or a function that sends data to the remote endpoint
      */
     constructor(
-        private readonly clientId: string,
+        clientId: string,
         transport: Transport | ((data: SerializableData, transferables: Transferable[]) => void)
     ) {
+        // Validate that clientId doesn't contain forward slashes
+        this.clientId = createSafeId(clientId);
+
         if (isFunction(transport)) {
             this.transport = new SendFunctionTransport(transport);
         } else {
@@ -65,10 +71,10 @@ export class WebRPC {
         if (!isRPCMessage(data)) {
             return;
         }
-        if (data.invocationId.clientId !== this.clientId) {
+        const { clientId: messageClientId, portId } = parseInvocationId(data.id);
+        if (messageClientId !== this.clientId) {
             return;
         }
-        const portId = data.invocationId.portId;
         const port = this.ports.get(portId);
         if (port) {
             port.receive(data);
