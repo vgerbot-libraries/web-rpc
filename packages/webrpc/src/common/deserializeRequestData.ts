@@ -4,10 +4,12 @@ import { isPlainObject } from './isPlainObject';
 
 export function deserializeRequestData(
     data: unknown[],
-    invokeCallback: (callbackId: string, args: unknown[]) => Promise<unknown>
+    invokeCallback: (callbackId: string, args: unknown[]) => Promise<unknown>,
+    cleanupCallback: (callbackId: string) => void
 ) {
     // Tracks objects that have already been transformed to handle circular references.
     const handled = new Map<unknown, unknown>();
+    const registry = new FinalizationRegistry(cleanupCallback);
 
     const transform = (value: unknown) => {
         if (handled.has(value)) {
@@ -17,6 +19,7 @@ export function deserializeRequestData(
             const callback = (...args: unknown[]) => {
                 return invokeCallback(value.id, args);
             };
+            registry.register(callback, value.id);
             handled.set(value, callback);
             return callback;
         }
@@ -48,6 +51,7 @@ export function deserializeRequestData(
                             return invokeCallback(originalValue.id, []);
                         },
                     };
+                    registry.register(descriptor.get, originalValue.id);
                     Object.defineProperty(object, key, descriptor);
                 } else {
                     object[key] = transform(originalValue);

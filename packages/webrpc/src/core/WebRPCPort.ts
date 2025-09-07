@@ -7,7 +7,7 @@ import type { Method } from '../common/Method';
 import uid from '../common/uid';
 import type { InvocationId, SafeId } from '../protocol/InvocationId';
 import { createSafeId, createInvocationId, parseInvocationId } from '../protocol/InvocationId';
-import type { CallMethodMessage, RPCMessage, ReturnMethodMessage } from '../protocol/Message';
+import type { CallMethodMessage, CleanupCallbackMessage, RPCMessage, ReturnMethodMessage } from '../protocol/Message';
 import type { SerializableData } from '../protocol/SerializableData';
 import type { Transport } from './Transport';
 
@@ -60,7 +60,22 @@ export class WebRPCPort {
             case 'method-return':
                 this.handleMethodReturn(message as ReturnMethodMessage);
                 break;
+            case 'cleanup-callback':
+                this.cleanupLocalCallback(message as CleanupCallbackMessage);
+                break;
         }
+    }
+    private cleanupLocalCallback(message: CleanupCallbackMessage) {
+        this.callbacks.delete(message.callbackId);
+    }
+    private cleanupRemoteCallback(callbackId: string) {
+        this.transport.send({
+            id: callbackId,
+            _webrpc: {
+                action: 'cleanup-callback',
+                timestamp: Date.now(),
+            },
+        });
     }
 
     private async invokeRemoteMethod(methodName: string, args: unknown[]): Promise<unknown> {
@@ -89,10 +104,15 @@ export class WebRPCPort {
     }
 
     private handleMethodCall(message: CallMethodMessage) {
-        const { id: actionId } = parseInvocationId(message.id);
-        const args = deserializeRequestData(message.params, (callbackId, args) => {
-            return this.invokeRemoteMethod(callbackId, args);
-        });
+        const args = deserializeRequestData(
+            message.params,
+            (callbackId, args) => {
+                return this.invokeRemoteMethod(callbackId, args);
+            },
+            id => {
+                this.cleanupRemoteCallback(id);
+            }
+        );
         let method: Method | undefined;
         if (Object.prototype.hasOwnProperty.call(this.localInstance, message.method)) {
             method = (this.localInstance[message.method] as Method).bind(this.localInstance);
@@ -153,9 +173,15 @@ export class WebRPCPort {
         const defer = this.invocationDefers.get(actionId);
         if (defer) {
             if ('result' in message) {
-                const result = deserializeRequestData([message.result], (callbackId, callbackArgs) => {
-                    return this.invokeRemoteMethod(callbackId, callbackArgs);
-                })[0];
+                const result = deserializeRequestData(
+                    [message.result],
+                    (callbackId, callbackArgs) => {
+                        return this.invokeRemoteMethod(callbackId, callbackArgs);
+                    },
+                    id => {
+                        this.cleanupRemoteCallback(id);
+                    }
+                )[0];
                 defer.resolve(result);
             } else if ('error' in message) {
                 defer.reject(message.error);

@@ -6,7 +6,7 @@ import type { SerializableData } from './SerializableData';
 export interface RPCMessage {
     id: InvocationId;
     _webrpc: {
-        action: 'method-call' | 'method-return';
+        action: 'method-call' | 'method-return' | 'cleanup-callback';
         timestamp: number;
     };
 }
@@ -27,6 +27,13 @@ export interface ReturnMethodMessage extends RPCMessage {
     };
     result?: SerializableData;
     error?: ErrorInfo;
+}
+export interface CleanupCallbackMessage extends RPCMessage {
+    _webrpc: {
+        action: 'cleanup-callback';
+        timestamp: number;
+    };
+    callbackId: string;
 }
 
 export function isRPCMessage(data: unknown): data is RPCMessage {
