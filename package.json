@@ -25,7 +25,7 @@
     "devDependencies": {
         "@changesets/cli": "^2.29.7",
         "@commitlint/cli": "^19.8.1",
-        "@commitlint/config-conventional": "^19.8.1",
+        "@commitlint/config-conventional": "^20.0.0",
         "@commitlint/prompt-cli": "^19.8.1",
         "@eslint/js": "^9.38.0",
         "@types/deasync": "^0.1.5",
