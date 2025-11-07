@@ -329,17 +329,20 @@ describe('Common Utilities', () => {
 
     describe('deserializeRequestData', () => {
         const mockInvokeCallback = vi.fn();
+        const mockCleanupCallback = vi.fn();
 
         beforeEach(() => {
             mockInvokeCallback.mockClear();
+            mockCleanupCallback.mockClear();
         });
 
         it('should handle basic data types', () => {
             const data = ['string', 123, true, false, null, undefined];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toEqual(data);
             expect(mockInvokeCallback).not.toHaveBeenCalled();
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle arrays', () => {
@@ -348,15 +351,16 @@ describe('Common Utilities', () => {
                 ['a', 'b', 'c'],
                 [true, false, null],
             ];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toEqual(data);
             expect(mockInvokeCallback).not.toHaveBeenCalled();
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle plain objects', () => {
             const data = [{ a: 1, b: 'string' }, { nested: { value: 42 } }];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toEqual(data);
             expect(mockInvokeCallback).not.toHaveBeenCalled();
@@ -372,7 +376,7 @@ describe('Common Utilities', () => {
             mockInvokeCallback.mockResolvedValue('callback-result');
 
             const data = [callbackObj];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             expect(typeof result[0]).toBe('function');
@@ -382,6 +386,7 @@ describe('Common Utilities', () => {
 
             expect(callResult).toBe('callback-result');
             expect(mockInvokeCallback).toHaveBeenCalledWith('func-123', ['arg1', 'arg2']);
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle objects with callback properties', async () => {
@@ -398,7 +403,7 @@ describe('Common Utilities', () => {
 
             mockInvokeCallback.mockResolvedValue('method-result');
 
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const obj = result[0] as Record<string, unknown>;
@@ -408,6 +413,7 @@ describe('Common Utilities', () => {
             const methodResult = await (obj.method as Function)('test-arg');
             expect(methodResult).toBe('method-result');
             expect(mockInvokeCallback).toHaveBeenCalledWith('func-456', ['test-arg']);
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle objects with getters', async () => {
@@ -424,7 +430,7 @@ describe('Common Utilities', () => {
 
             mockInvokeCallback.mockResolvedValue('getter-result');
 
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const obj = result[0] as Record<string, unknown>;
@@ -433,6 +439,7 @@ describe('Common Utilities', () => {
             const getterResult = await obj.computed;
             expect(getterResult).toBe('getter-result');
             expect(mockInvokeCallback).toHaveBeenCalledWith('getter-789', []);
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle complex nested structures', async () => {
@@ -462,7 +469,7 @@ describe('Common Utilities', () => {
                 return Promise.resolve('default-result');
             });
 
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const obj = result[0] as Record<string, unknown>;
@@ -478,6 +485,7 @@ describe('Common Utilities', () => {
 
             const getterResult = await (obj.level1 as Record<string, unknown>).computed;
             expect(getterResult).toBe('getter-result');
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle circular references', () => {
@@ -485,7 +493,7 @@ describe('Common Utilities', () => {
             circularArray.push(circularArray);
 
             const data = [circularArray];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const processedArray = result[0] as unknown[];
@@ -506,7 +514,7 @@ describe('Common Utilities', () => {
             mockInvokeCallback.mockResolvedValue('circular-result');
 
             const data = [circularObj];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const processedObj = result[0] as Record<string, unknown>;
@@ -515,6 +523,7 @@ describe('Common Utilities', () => {
 
             const callbackResult = await (processedObj.callback as Function)();
             expect(callbackResult).toBe('circular-result');
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle arrays with circular references', () => {
@@ -524,7 +533,7 @@ describe('Common Utilities', () => {
             obj2.ref = obj1;
 
             const data = [[obj1, obj2]];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const processedArray = result[0] as Record<string, unknown>[];
@@ -557,7 +566,7 @@ describe('Common Utilities', () => {
                 return Promise.resolve('default-mixed');
             });
 
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const obj = result[0] as Record<string, unknown>;
@@ -572,6 +581,7 @@ describe('Common Utilities', () => {
             const getterResult = await obj.getter;
             expect(getterResult).toBe('getter-mixed');
             expect(mockInvokeCallback).toHaveBeenCalledWith('mixed-getter', []);
+            expect(mockCleanupCallback).not.toHaveBeenCalled();
         });
 
         it('should handle deeply nested circular references', () => {
@@ -587,7 +597,7 @@ describe('Common Utilities', () => {
             deepObj.level1.level2.level3.root = deepObj;
 
             const data = [deepObj];
-            const result = deserializeRequestData(data, mockInvokeCallback);
+            const result = deserializeRequestData(data, mockInvokeCallback, mockCleanupCallback);
 
             expect(result).toHaveLength(1);
             const processedObj = result[0];
