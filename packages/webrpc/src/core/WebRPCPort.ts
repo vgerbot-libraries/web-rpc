@@ -94,8 +94,9 @@ export class WebRPCPort {
             return this.invokeRemoteMethod(callbackId, args);
         });
         let method: Method | undefined;
-        if (Object.prototype.hasOwnProperty.call(this.localInstance, message.method)) {
-            method = (this.localInstance[message.method] as Method).bind(this.localInstance);
+        const instance = this.localInstance;
+        if (isFunction(instance[message.method])) {
+            method = (instance[message.method] as Method).bind(instance);
         } else {
             method = this.callbacks.get(message.method);
         }
