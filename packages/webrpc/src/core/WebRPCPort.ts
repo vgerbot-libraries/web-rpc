@@ -66,7 +66,7 @@ export class WebRPCPort {
         }
     }
     private cleanupLocalCallback(message: CleanupCallbackMessage) {
-        this.callbacks.delete(message.callbackId);
+        this.callbacks.delete(createSafeId(message.callbackId));
     }
     private cleanupRemoteCallback(callbackId: string) {
         this.transport.send({
