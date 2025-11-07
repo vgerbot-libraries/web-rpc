@@ -1,5 +1,11 @@
 # @vgerbot/web-rpc
 
+## 3.0.1
+
+### Patch Changes
+
+- 3aa2354: Resolve proxy object method lookup issues
+
 ## 3.0.0
 
 ### Major Changes
