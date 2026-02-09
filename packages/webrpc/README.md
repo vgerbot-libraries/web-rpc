@@ -516,12 +516,6 @@ interface Transport {
 }
 ```
 
-## 📋 Requirements
-
-- ES2017+ environment
-- TypeScript 4.0+ (for full type safety)
-- Modern browser or Node.js environment
-
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -532,4 +526,4 @@ interface Transport {
 
 ## 📄 License
 
-ISC License - see the [LICENSE](LICENSE) file for details.
+MIT License - see the [LICENSE](LICENSE) file for details.
