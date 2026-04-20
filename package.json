@@ -23,7 +23,7 @@
     "author": "Chienhsin Yang <y1j2x345@gmail.com>",
     "license": "MIT",
     "devDependencies": {
-        "@changesets/cli": "^2.30.0",
+        "@changesets/cli": "^2.31.0",
         "@commitlint/cli": "^19.8.1",
         "@commitlint/config-conventional": "^20.5.0",
         "@commitlint/prompt-cli": "^20.5.0",
