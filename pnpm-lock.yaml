@@ -18,8 +18,8 @@ importers:
         specifier: ^20.5.3
         version: 20.5.3
       '@commitlint/prompt-cli':
-        specifier: ^20.5.2
-        version: 20.5.2(@types/node@24.5.2)(typescript@5.9.2)
+        specifier: ^20.5.3
+        version: 20.5.3(@types/node@24.5.2)(typescript@5.9.2)
       '@eslint/js':
         specifier: ^9.39.4
         version: 9.39.4
@@ -286,8 +286,8 @@ packages:
     resolution: {integrity: sha512-mXDnlJdvDzSObafjYrOSvZBwkD01cqB4gbnnFuVyNpGUM5ijwU/r/6uqUmBXAAOKRfyEjpkGVZxaDsCVnHAgyw==}
     engines: {node: '>=v18'}
 
-  '@commitlint/ensure@20.5.0':
-    resolution: {integrity: sha512-IpHqAUesBeW1EDDdjzJeaOxU9tnogLAyXLRBn03SHlj1SGENn2JGZqSWGkFvBJkJzfXAuCNtsoYzax+ZPS+puw==}
+  '@commitlint/ensure@20.5.3':
+    resolution: {integrity: sha512-4i4AgNvH62owG9MwSiWKrle7HGNpBHHdLnWFIp5fTsHUYe5kRuh15t08L/0pdbbrRk8JKXQxxN4hZQcn+szkrw==}
     engines: {node: '>=v18'}
 
   '@commitlint/execute-rule@19.8.1':
@@ -314,8 +314,8 @@ packages:
     resolution: {integrity: sha512-9V99EKG3u7z+FEoe4ikgq7YGRCSukAcvmKQuTtUyiYPnOd9a2/H9Ak1J9nJA1HChRQp9OA/sIKPugGS+FK/k1A==}
     engines: {node: '>=v18'}
 
-  '@commitlint/load@20.5.2':
-    resolution: {integrity: sha512-zmr0RGDz7vThxW1I8ohb9yBjnGuH9mqwJpn21hInjGla+IlLOkS9ey0+dD5HlkzFlY0lX2NYdA2lDW6/0rO7Gw==}
+  '@commitlint/load@20.5.3':
+    resolution: {integrity: sha512-1FDZWuKyu98Myb8i7Tp31jPU2rZpOwAdYRyJcy2KoGg7Xk2A+bgHN8smhMaaNSNkmE8fwt53BokywZq8Gv/5XQ==}
     engines: {node: '>=v18'}
 
   '@commitlint/message@19.8.1':
@@ -326,13 +326,13 @@ packages:
     resolution: {integrity: sha512-mmAHYcMBmAgJDKWdkjIGq50X4yB0pSGpxyOODwYmoexxxiUCy5JJT99t1+PEMK7KtsCtzuWYIAXYAiKR+k+/Jw==}
     engines: {node: '>=v18'}
 
-  '@commitlint/prompt-cli@20.5.2':
-    resolution: {integrity: sha512-rvCbV9S5IcgGjamyz/sXabpcM6v1JLBTlSTRSHXlAOX6VyN4qup+JeOb7yrEJ0UHebswzmriQT5cRKDb7OdpBA==}
+  '@commitlint/prompt-cli@20.5.3':
+    resolution: {integrity: sha512-6BZZecUQB8yEMqQZY0Tve1afM27/njXtVmNnhT1k8GjmWtmtHanUIPTjSqu8SuIdXCeLhBowvMyyKGTQNOpyuA==}
     engines: {node: '>=v18'}
     hasBin: true
 
-  '@commitlint/prompt@20.5.2':
-    resolution: {integrity: sha512-BO/xHu7uvuzSjGy1wux/v+D+Ra5cI8+HzjmTll8u4lX0yMDhZjrNgasuXFNtcj++m+o1BAmbZfsxTi6/5NIjyg==}
+  '@commitlint/prompt@20.5.3':
+    resolution: {integrity: sha512-AGoW5GoofJrdzhmkgikAHOgiJAijY1NjRPHxNRaWZpHo1QzKqj1N2Azqg+ldZoiChQ9bxwC0UolVvFN/wK20Bg==}
     engines: {node: '>=v18'}
 
   '@commitlint/read@19.8.1':
@@ -343,8 +343,8 @@ packages:
     resolution: {integrity: sha512-GM0mAhFk49I+T/5UCYns5ayGStkTt4XFFrjjf0L4S26xoMTSkdCf9ZRO8en1kuopC4isDFuEm7ZOm/WRVeElVg==}
     engines: {node: '>=v18'}
 
-  '@commitlint/resolve-extends@20.5.2':
-    resolution: {integrity: sha512-8EhSCU9eNos/5cI1yg64GW79UH1c64O69AfStCsj4zqy6An/qIphVEXj4/+2M6056T8coz00f+UXFn4WUUP1HQ==}
+  '@commitlint/resolve-extends@20.5.3':
+    resolution: {integrity: sha512-+ogW9v/u9JqpvAgTrLra/YTFo0KkjU6iNblF89pPsj4NebNc+DAWctsludwezI8YnsjBmfHpApSwcXprN/f/ew==}
     engines: {node: '>=v18'}
 
   '@commitlint/rules@19.8.1':
@@ -1787,6 +1787,9 @@ packages:
     resolution: {integrity: sha512-w+5mJ3GuFL+NjVtJlvydShqE1eN3h3PbI7/5LAsYJP/2qtuMXjfL2LpHSRqo4b4eSF5K/DH1JXKUAHSB2UW50g==}
     engines: {node: '>= 0.4'}
 
+  es-toolkit@1.46.1:
+    resolution: {integrity: sha512-5eNtXOs3tbfxXOj04tjjseeWkRWaoCjdEI+96DgwzZoe6c9juL49pXlzAFTI72aWC9Y8p7168g6XIKjh7k6pyQ==}
+
   esbuild@0.27.0:
     resolution: {integrity: sha512-jd0f4NHbD6cALCyGElNpGAOtWxSq46l9X/sWB0Nzd5er4Kz2YTm+Vl0qKFT9KUJvD8+fiO8AvoHhFvEatfVixA==}
     engines: {node: '>=18'}
@@ -3202,6 +3205,10 @@ packages:
     resolution: {integrity: sha512-VKS/ZaQhhkKFMANmAOhhXVoIfBXblQxGX1myCQ2faQrfmobMftXeJPcZGp0gS07ocvGJWDLZGyOZDadDBqYIJg==}
     engines: {node: '>=18'}
 
+  tinyexec@1.1.2:
+    resolution: {integrity: sha512-dAqSqE/RabpBKI8+h26GfLq6Vb3JVXs30XYQjdMjaj/c2tS8IYYMbIzP599KtRj7c57/wYApb3QjgRgXmrCukA==}
+    engines: {node: '>=18'}
+
   tinyglobby@0.2.15:
     resolution: {integrity: sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==}
     engines: {node: '>=12.0.0'}
@@ -3865,14 +3872,10 @@ snapshots:
       lodash.startcase: 4.4.0
       lodash.upperfirst: 4.3.1
 
-  '@commitlint/ensure@20.5.0':
+  '@commitlint/ensure@20.5.3':
     dependencies:
       '@commitlint/types': 20.5.0
-      lodash.camelcase: 4.3.0
-      lodash.kebabcase: 4.1.1
-      lodash.snakecase: 4.1.1
-      lodash.startcase: 4.4.0
-      lodash.upperfirst: 4.3.1
+      es-toolkit: 1.46.1
 
   '@commitlint/execute-rule@19.8.1': {}
 
@@ -3911,16 +3914,16 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@commitlint/load@20.5.2(@types/node@24.5.2)(typescript@5.9.2)':
+  '@commitlint/load@20.5.3(@types/node@24.5.2)(typescript@5.9.2)':
     dependencies:
       '@commitlint/config-validator': 20.5.0
       '@commitlint/execute-rule': 20.0.0
-      '@commitlint/resolve-extends': 20.5.2
+      '@commitlint/resolve-extends': 20.5.3
       '@commitlint/types': 20.5.0
       cosmiconfig: 9.0.1(typescript@5.9.2)
       cosmiconfig-typescript-loader: 6.3.0(@types/node@24.5.2)(cosmiconfig@9.0.1(typescript@5.9.2))(typescript@5.9.2)
+      es-toolkit: 1.46.1
       is-plain-obj: 4.1.0
-      lodash.mergewith: 4.6.2
       picocolors: 1.1.1
     transitivePeerDependencies:
       - '@types/node'
@@ -3934,19 +3937,19 @@ snapshots:
       conventional-changelog-angular: 7.0.0
       conventional-commits-parser: 5.0.0
 
-  '@commitlint/prompt-cli@20.5.2(@types/node@24.5.2)(typescript@5.9.2)':
+  '@commitlint/prompt-cli@20.5.3(@types/node@24.5.2)(typescript@5.9.2)':
     dependencies:
-      '@commitlint/prompt': 20.5.2(@types/node@24.5.2)(typescript@5.9.2)
+      '@commitlint/prompt': 20.5.3(@types/node@24.5.2)(typescript@5.9.2)
       inquirer: 9.3.8(@types/node@24.5.2)
-      tinyexec: 1.1.1
+      tinyexec: 1.1.2
     transitivePeerDependencies:
       - '@types/node'
       - typescript
 
-  '@commitlint/prompt@20.5.2(@types/node@24.5.2)(typescript@5.9.2)':
+  '@commitlint/prompt@20.5.3(@types/node@24.5.2)(typescript@5.9.2)':
     dependencies:
-      '@commitlint/ensure': 20.5.0
-      '@commitlint/load': 20.5.2(@types/node@24.5.2)(typescript@5.9.2)
+      '@commitlint/ensure': 20.5.3
+      '@commitlint/load': 20.5.3(@types/node@24.5.2)(typescript@5.9.2)
       '@commitlint/types': 20.5.0
       inquirer: 9.3.8(@types/node@24.5.2)
       picocolors: 1.1.1
@@ -3971,13 +3974,13 @@ snapshots:
       lodash.mergewith: 4.6.2
       resolve-from: 5.0.0
 
-  '@commitlint/resolve-extends@20.5.2':
+  '@commitlint/resolve-extends@20.5.3':
     dependencies:
       '@commitlint/config-validator': 20.5.0
       '@commitlint/types': 20.5.0
+      es-toolkit: 1.46.1
       global-directory: 5.0.0
       import-meta-resolve: 4.2.0
-      lodash.mergewith: 4.6.2
       resolve-from: 5.0.0
 
   '@commitlint/rules@19.8.1':
@@ -5332,6 +5335,8 @@ snapshots:
       is-callable: 1.2.7
       is-date-object: 1.1.0
       is-symbol: 1.1.1
+
+  es-toolkit@1.46.1: {}
 
   esbuild@0.27.0:
     optionalDependencies:
@@ -6821,6 +6826,8 @@ snapshots:
   tinyexec@1.0.4: {}
 
   tinyexec@1.1.1: {}
+
+  tinyexec@1.1.2: {}
 
   tinyglobby@0.2.15:
     dependencies:
